@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'passport',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,12 @@ WSGI_APPLICATION = 'sso.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sso',
+        'HOST': '119.23.13.169',
+        'PORT': '3306',
+        'USER': 'sso',
+        'PASSWORD': 'Sso123!!!'
     }
 }
 
@@ -119,3 +124,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'statics'),
+)
+
+default_return_url = '127.0.0.1:8002'
+
+AUTH_USER_MODEL = 'passport.UserProfile'

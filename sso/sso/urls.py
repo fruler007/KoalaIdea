@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from passport import views as passport_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^login/$', passport_views.login)
 ]

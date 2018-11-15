@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import os
 import sys
+import win_unicode_console
+win_unicode_console.enable()
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sso.settings")
