@@ -19,5 +19,6 @@ from passport import views as passport_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^login/$', passport_views.login)
+    url(r'^login/$', passport_views.login, name="login"),
+    url(r'^register/$', passport_views.register, name='register'),
 ]
