@@ -1,7 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from django.conf import settings
 from forms import LoginForm
+from utils.smtp import smtp_instance
+from email.mime.text import MIMEText
+from email.header import Header
+from django.conf import settings
+from django import forms
+import logging
+from response_code import RET
+from django.core.exceptions import ValidationError
+import random
+import json
 
 
 # Create your views here.
@@ -35,3 +44,30 @@ def register(request):
         return render(request, "passport/register.html")
     elif request.method == 'POST':
         return render(request, "passport/register.html")
+
+
+# 获取验证码
+def reg_mail_code(request):
+    if request.method == "POST":
+        f = forms.EmailField()
+        try:
+            f.clean(request.POST.get("email"))
+        except ValidationError as e:
+            logging.error("is validation email address")
+            return HttpResponse(json.dumps({"ret_code": RET.VALIDATION_DATA}),
+                                content_type= 'application/json')
+
+        # 发送验证码
+        random_code = random.randint(10**settings.EMAIL_CODE_LENGTH,
+                                     10**(settings.EMAIL_CODE_LENGTH+1)-1)
+        body = "你的注册码为: {random_code}".format(random_code=random_code)
+        message = MIMEText(body, 'html', 'utf-8')
+        message["subject"] = Header("邮件注册码", 'utf-8')
+        message["from"] = Header("xialongjun@lb-tech.net", 'utf--8')
+        message["to"] = settings.EMAIL_HOST_USER
+        smtp_instance.sendmail(settings.EMAIL_HOST_USER,
+                               [settings.EMAIL_HOST_USER, ],
+                               message.as_string())
+
+        return HttpResponse(json.dumps({"RET_CODE": RET.ACCEPT}),
+                            content_type='application/json')

@@ -132,3 +132,13 @@ STATICFILES_DIRS = (
 default_return_url = '127.0.0.1:8002'
 
 AUTH_USER_MODEL = 'passport.UserProfile'
+
+
+# 设置邮箱信息
+EMAIL_HOST = "smtp.163.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "fruler@163.com"
+EMAIL_HOST_PASSWORD = "wy6666"
+
+# 设置短信验证码长度
+EMAIL_CODE_LENGTH = 6

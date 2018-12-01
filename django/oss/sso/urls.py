@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', passport_views.login, name="login"),
     url(r'^register/$', passport_views.register, name='register'),
+    url(r'^reg_mail_code/$', passport_views.reg_mail_code, name="reg_mail_code"),
 ]
