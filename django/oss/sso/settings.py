@@ -106,6 +106,17 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+CACHES = {
+    'default':{
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://119.23.13.169:6379',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': 'Koalabuy123!!!',
+        },
+    },
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -129,6 +140,11 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'statics'),
 )
 
+
+
+
+
+
 default_return_url = '127.0.0.1:8002'
 
 AUTH_USER_MODEL = 'passport.UserProfile'
@@ -140,5 +156,8 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = "fruler@163.com"
 EMAIL_HOST_PASSWORD = "wy6666"
 
-# 设置短信验证码长度
+# 设置邮箱验证码长度
 EMAIL_CODE_LENGTH = 6
+
+# 设置邮箱注册码请求间隔限制
+EMAIL_REQUEST_INTERVAL = 60

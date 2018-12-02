@@ -11,6 +11,8 @@ from response_code import RET
 from django.core.exceptions import ValidationError
 import random
 import json
+from django.core.cache import cache
+import datetime
 
 
 # Create your views here.
@@ -50,24 +52,35 @@ def register(request):
 def reg_mail_code(request):
     if request.method == "POST":
         f = forms.EmailField()
+        email = request.POST.get("email")
         try:
-            f.clean(request.POST.get("email"))
+            f.clean(email)
         except ValidationError as e:
             logging.error("is validation email address")
             return HttpResponse(json.dumps({"ret_code": RET.VALIDATION_DATA}),
-                                content_type= 'application/json')
+                                content_type="application/json")
+
+        # 查询注册邮箱在一定之间内多次提交
+        key = email + "email_register"
+        value = datetime.datetime.now()
+        if cache.has_key(key):
+            return HttpResponse(json.dumps({"ret_code": RET.FRE_REQUEST}),
+                                content_type="application/json")
+        cache.set(key, value, settings.EMAIL_REQUEST_INTERVAL)
 
         # 发送验证码
-        random_code = random.randint(10**settings.EMAIL_CODE_LENGTH,
-                                     10**(settings.EMAIL_CODE_LENGTH+1)-1)
-        body = "你的注册码为: {random_code}".format(random_code=random_code)
-        message = MIMEText(body, 'html', 'utf-8')
-        message["subject"] = Header("邮件注册码", 'utf-8')
-        message["from"] = Header("xialongjun@lb-tech.net", 'utf--8')
-        message["to"] = settings.EMAIL_HOST_USER
+        random_code = random.randint(10**(settings.EMAIL_CODE_LENGTH-1),
+                                     10**(settings.EMAIL_CODE_LENGTH)-1)
+        body = "欢迎注册KoalaBuy:" \
+               "\n    你的注册码为: {random_code}".format(random_code=random_code)
+        message = MIMEText(body, 'plain', 'utf-8')
+        message["subject"] = "Koalabuy邮件注册码"
+        message["from"] = settings.EMAIL_HOST_USER
+        message["to"] = email
         smtp_instance.sendmail(settings.EMAIL_HOST_USER,
-                               [settings.EMAIL_HOST_USER, ],
+                               [email,],
                                message.as_string())
+
 
         return HttpResponse(json.dumps({"RET_CODE": RET.ACCEPT}),
                             content_type='application/json')
