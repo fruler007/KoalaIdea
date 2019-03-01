@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+# 用户信息表
 class UserProfile(models.Model):
     username = models.CharField(max_length=128, null=False)
     email = models.EmailField(max_length=128, null=True)
@@ -10,6 +11,7 @@ class UserProfile(models.Model):
     last_login_date = models.DateTimeField(auto_now=True)
 
 
+# 用户权限表
 class ServPermssions(models.Model):
     # 0 未启用
     # 1 已启用
