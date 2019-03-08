@@ -21,7 +21,13 @@
         event = event ? event: window.event;
         var obj = event.srcElement ? event.srcElement : event.target;
         var xhr = new XMLHttpRequest();
-        xhr.open("post", "/v1/api/genVerifyImage/", true);
+        var phone = document.getElementById("regPhone").value;
+        var csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        var post_url =  "/v1/api/genVerifyImage/" + "?phone=" + phone + "&" + "csrfmiddlewaretoken" + "=" + csrf_token;
+        xhr.open("get", post_url, true);
+
+        // post方法请求时,需要指定以下设置
+        // xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         xhr.responseType = "blob";
         xhr.onload = function(){
             if (this.status == 200){
@@ -40,7 +46,25 @@
                 ele.appendChild(img);
             }
         };
-        xhr.send();
+
+        // post请求
+        /***
+        if(phone.length> 0 & csrf_token.length>0 ){
+            var req_string = "phone=" + phone + "&" + "csrfmiddlewaretoken" + "=" + csrf_token；
+            xhr.send(req_string);
+        }
+         ***/
+
+        // get请求
+        if(phone.length> 0 ){
+            // post请求
+            /***
+            var req_string = "phone=" + phone + "&" + "csrfmiddlewaretoken" + "=" + csrf_token;
+            xhr.send(req_string);
+             ***/
+             xhr.send();
+        }
+
     }
 
 

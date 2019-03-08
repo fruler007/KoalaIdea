@@ -87,7 +87,7 @@ def create_verify(max_size=34, length=4):
 
 # 测试代码
 # a = create_verify()
-# with open('test.jpeg', 'wb') as f:
+# with open('test.jpg', 'wb') as f:
 #     f.write(a[2])
 # print(a[0], a[1])
 

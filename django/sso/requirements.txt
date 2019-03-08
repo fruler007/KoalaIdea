@@ -1,1 +1,2 @@
-Pillow
+Pillow==5.0.0
+django-redis==4.9.0
