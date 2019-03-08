@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script type="text/javascript" src="/static/common/js/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>用户注册</title>
 </head>
 <body>
 <form method="post">
     {% csrf_token %}
-    <div><label>用户名</label><input name="username" type="text"></div>
-    <div><label>手机号</label><input name="phone" type="text"> </div>
+    <div><label>用户名</label><input id="username" name="username" type="text"></div>
+    <div><label>手机号</label><input id="regPhone" name="phone" type="text"> </div>
     <div><label>密码</label><input name="password" type="password"></div>
-    <div>验证图片<a src="#"></a><input type="imagVerifyCode" placeholder="请先填入图片验证码"></div>
+    <div>验证图片<img id="imagVerifyLink" ><input type="imagVerifyCode" placeholder="请先填入图片验证码"></div>
     <div><label>短信验证码</label><input name="verifyCode" type="text"><input type="button" value="获取短信验证码" disabled></div>
     <div><input type="submit" value="提交"></div>
 </form>
 </body>
+<script>
+    $("#username").blur(function(){
+        console.log(111);
+        var phone = $("#username").val();
+        $.ajax({
+                type: 'POST',
+                url: "/v1/api/genVerifyImage/",
+                dataType: "json",
+                data: JSON.stringify({"phone": phone}),
+                success: function(img){
+                    console.log(333);
+                    $("#imagVerifyLink")[0].src=img;
+                }
+            }
+        )
+    })
+
+</script>
 </html>

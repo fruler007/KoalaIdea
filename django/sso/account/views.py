@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -18,8 +19,17 @@ class RegisterApiView(View):
 
 #生成验证图片
 class GenVerifyImage(View):
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request):
-        with open("1551967549.jpg", mode='rb') as f:
+        with open("1.jpg", mode='rb') as f:
             img = f.read()
         return HttpResponse(img, content_type="image/jpg")
 
+    @csrf_exempt
+    def post(self, request):
+        with open("1.jpg", mode='rb') as f:
+            img = f.read()
+        return HttpResponse(img, content_type="image/jpg")

@@ -1,3 +1,4 @@
+# 用于生成验证码图像'
 import base64
 import random
 import string
@@ -14,8 +15,10 @@ def random_char():
         # string.ascii_uppercase + string.ascii_uppercase + '3456789', 4)
     return random.choice(string.ascii_uppercase + string.ascii_uppercase + '23456789')
 
+
 def random_bg_color():
     return random.randint(126, 255), random.randint(126, 255), random.randint(126, 255)
+
 
 def random_font_color():
     return random.randint(10, 66), random.randint(10, 66), random.randint(10, 66)
@@ -34,16 +37,17 @@ def random_font(min_size=28, max_size=34, rnd=True):
         font_size = random.randint(min_size, max_size)
     return ImageFont.truetype(font_type, font_size, encoding='utf-8')
 
+
 def create_verify(max_size=34, length=4):
     left_space, top_space = int(max_size >> 1), int(max_size >> 2)
     width, height = max_size * length + left_space * 2, max_size + top_space
 
     """ 创建图片 """
-    #创建一个图片数据
+    # 创建一个图片数据
     img = Image.new('RGB', (width, height))
     # 为图片分配存储空间和并加载像素数据
     pixs = img.load()
-    #绘制图像
+    # 绘制图像
     draw = ImageDraw.Draw(img)
     for x in range(width):
         for y in range(height):
@@ -74,9 +78,16 @@ def create_verify(max_size=34, length=4):
     # 裁剪图片
     crop_img = img.crop(region)
 
-    #将图片写入二进制缓存中
+    # 将图片写入二进制缓存中
     buffered = BytesIO()
     crop_img.save(buffered, format='JPEG')
     # 图片的随机编码，图片对应的问题，已经图片
-    return uuid.uuid4().__str__(), ret_code, buffered.getvalue()
+    return uuid.uuid4().__str__(), ret_code, buffered.getvalue(), crop_img
+
+
+# 测试代码
+# a = create_verify()
+# with open('test.jpeg', 'wb') as f:
+#     f.write(a[2])
+# print(a[0], a[1])
 
