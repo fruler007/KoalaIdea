@@ -2,7 +2,9 @@ from django.shortcuts import render, HttpResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from account.models import UserProfile
+from django.core.cache import cache
 # Create your views here.
+
 
 class RegisterView(View):
     def get(self, request):
