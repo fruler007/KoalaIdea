@@ -7,6 +7,7 @@ import uuid
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 FONT_PATH = os.path.join(os.path.dirname(__file__), 'fonts')
+import config
 
 
 # 生成随机字符
@@ -38,7 +39,7 @@ def random_font(min_size=28, max_size=34, rnd=True):
     return ImageFont.truetype(font_type, font_size, encoding='utf-8')
 
 
-def create_verify(max_size=34, length=4):
+def create_verify(max_size=34, length=config.img_verify_code_length):
     left_space, top_space = int(max_size >> 1), int(max_size >> 2)
     width, height = max_size * length + left_space * 2, max_size + top_space
 
@@ -81,13 +82,13 @@ def create_verify(max_size=34, length=4):
     # 将图片写入二进制缓存中
     buffered = BytesIO()
     crop_img.save(buffered, format='JPEG')
-    # 图片的随机编码，图片对应的问题，已经图片
-    return uuid.uuid4().__str__(), ret_code, buffered.getvalue(), crop_img
+    # 返回验证码图片对应的验证码， 图片二进制文件
+    return ret_code, buffered.getvalue()
 
 
 # 测试代码
 # a = create_verify()
 # with open('test.jpg', 'wb') as f:
-#     f.write(a[2])
+#     f.write(a[1])
 # print(a[0], a[1])
 

@@ -11,8 +11,8 @@
     <div><label>用户名</label><input id="username" name="username" type="text"></div>
     <div><label >手机号</label><input onblur="GetVerityImage(event)" id="regPhone" name="phone" type="text"> </div>
     <div><label>密码</label><input name="password" type="password"></div>
-    <div>验证图片<span id="imageVerifyLink"></span><input type="imagVerifyCode" placeholder="请先填入图片验证码"></div>
-    <div><label>短信验证码</label><input name="verifyCode" type="text"><input type="button" value="获取短信验证码" disabled></div>
+    <div>验证图片<span id="imageVerifyLink"></span><input id="imgVerifyCode" type="imagVerifyCode" placeholder="请先填入图片验证码"></div>
+    <div><label>短信验证码</label><input id="smsVerityCode" name="verifyCode" type="text"><button onclick="getSmsCode(this)" type="button" >获取短信验证码</button></div>
     <div><input type="submit" value="提交"></div>
 </form>
 </body>
@@ -65,8 +65,26 @@
              xhr.send();
         }
 
+
     }
 
+
+    // 获取短信验证码
+    function getSmsCode(ele){
+        var regPhone = $("#regPhone").val();
+        var imgVerifyCode = $("#imgVerifyCode").val();
+        var ele = ele;
+        $.ajax({
+            url: "/v1/api/smsVerifyCode/",
+            method:"GET",
+            datatype:"json",
+            data: {"phone": regPhone, "imgVerifyCode": imgVerifyCode},
+            success: function(data){
+{#                $(ele).attr("disabled", "disabled");#}
+                console.log(data);
+            }
+        })
+    }
 
 
 

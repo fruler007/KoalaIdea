@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^reg/', RegisterView.as_view()),
     url(r'^api/reg/$', RegisterApiView.as_view()),
     url(r'^api/genVerifyImage/$', account_views.GenVerifyImage.as_view()),
+    url(r'^api/smsVerifyCode/$', account_views.SmsVerifyCode.as_view()),
 ]
