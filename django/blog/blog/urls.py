@@ -17,10 +17,14 @@ from django.conf.urls import url, include
 from django.contrib import admin
 import authapi.urls
 import center.urls
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^i/', include('center.urls')),
-    url('r^auth/', include('authapi.urls'))
-
+    url('r^auth/', include('authapi.urls')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns.append(url(r'^_dubug_/', include(debug_toolbar.urls)))
