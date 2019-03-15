@@ -1,11 +1,20 @@
-from django.shortcuts import render, redirect
+import config
+import requests
+from django.shortcuts import render
+from django_redis import get_redis_connection
+from deco.auth import check_login
+redis_conn = get_redis_connection()
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 
 # Create your views here.
-
-
+# @check_login
+@xframe_options_exempt
 def center(request):
     if request.method == 'GET':
-        session_id = request.COOKIES.get("session_id")
-        if not session_id:
-            return redirect("http://127.0.0.1:8000/v1/login?return=127.0.0.1:8001/i")
-        return render(request, 'center.html')
+        rd = render(request, "center.html")
+        rd["Access-Control-Allow-Credentials"] = True
+        rd["Access-Control-Allow-Origin"] = "http://account.koala.com"
+        # rd["Access-Control-Allow-Methods"] = "GET,POST,PUT,POST"
+        # rd["Access-Control-Allow-Headers"] = "x-requested-with,content-type"
+        return rd

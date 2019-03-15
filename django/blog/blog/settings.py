@@ -25,7 +25,7 @@ SECRET_KEY = 'zd3r0ej6b+1#$3!^zdt)4srta8i75(=!mzj-0@ilsmzatnye1u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', ]
 
 
 # Application definition
@@ -149,7 +149,7 @@ CACHES = {
 INTERNAL_IPS = ("127.0.0.1",)
 
 DEBUG_TOOLBAR_PANELS = [
-'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
     'debug_toolbar.panels.settings.SettingsPanel',
     'debug_toolbar.panels.headers.HeadersPanel',
