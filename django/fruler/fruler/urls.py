@@ -1,4 +1,4 @@
-"""blog URL Configuration
+"""fruler URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -15,16 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-import authapi.urls
-import center.urls
-from django.conf import settings
+from authuser import urls as authuser_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^i/', include('center.urls')),
-    url(r'^auth/', include('authapi.urls')),
+    url(r'^authuser/', include("authuser.urls"))
 ]
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns.append(url(r'^_dubug_/', include(debug_toolbar.urls)))
