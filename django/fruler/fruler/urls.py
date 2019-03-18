@@ -19,5 +19,5 @@ from authuser import urls as authuser_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^authuser/', include("authuser.urls"))
+    url(r'^authuser/', include("authuser.urls")),
 ]
