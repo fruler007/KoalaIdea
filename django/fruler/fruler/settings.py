@@ -88,7 +88,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://119.23.13.169:6379',
+        'LOCATION': 'redis://119.23.13.169:6379/2',
         'OPTIONS': {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PASSWORD": "Koalabuy123",
