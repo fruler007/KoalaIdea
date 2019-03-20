@@ -40,9 +40,9 @@ def test(request):
             session_id_cache = redis_conn.get(session_id)
             klid_cache = redis_conn.get(KLID)
 
-            session_id_cache = 0
-            klid_cache = 0
             if all((session_id_cache, klid_cache)):
+                redis_conn.expire(session_id, config.session_redis_expires)
+                redis_conn.expire(KLID, config.session_redis_expires)
                 return HttpResponse("login success")
             else:
                 checklogin_data = {"session_id": session_id,
@@ -52,6 +52,10 @@ def test(request):
                                                     json=checklogin_data)
                 return_data = json.loads(checklogin_response.content.decode("utf-8"))
                 if return_data.get("code") == 202:
+                    redis_conn.set(session_id, 1)
+                    redis_conn.set(KLID, 1)
+                    redis_conn.expire(session_id, config.session_redis_expires)
+                    redis_conn.expire(KLID, config.session_redis_expires)
                     return HttpResponse("success")
 
         # 生成全路径url

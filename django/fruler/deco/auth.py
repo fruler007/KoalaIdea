@@ -19,6 +19,8 @@ def checklogin(func):
                 session_id_cache = 0
                 klid_cache = 0
                 if all((session_id_cache, klid_cache)):
+                    redis_conn.expire(session_id, config.session_redis_expires)
+                    redis_conn.expire(KLID, config.session_redis_expires)
                     return func(request, *args, **kwargs)
                 else:
                     checklogin_data = {"session_id": session_id,
