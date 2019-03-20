@@ -5,6 +5,7 @@ import requests
 from django.shortcuts import render, HttpResponse, redirect
 from django_redis import get_redis_connection
 redis_conn = get_redis_connection()
+from deco.auth import checklogin
 
 
 # Create your views here.
@@ -15,7 +16,7 @@ def set_cookie(request):
         KLID = request.GET.get("KLID", "")
         return_callback = "TestJson2" + '(["A", "b", "c"], "bbb")'
         rp = HttpResponse(return_callback)
-        expires_date = datetime.datetime.now() + datetime.timedelta(
+        cookie_expires_date = datetime.datetime.now() + datetime.timedelta(
             days=config.session_cookie_expires/86400)
 
         if all((session_id, KLID)):
@@ -24,8 +25,8 @@ def set_cookie(request):
             # redis_conn.expire("fruler_session_id", config.session_redis_expires/86400)
             # redis_conn.set("fruler_KLID", KLID)
             # redis_conn.expire("fruler_KLID", config.session_redis_expires/86400)
-            rp.set_cookie("session_id", session_id, path='/', expires=expires_date, domain=domain)
-            rp.set_cookie("KLID", KLID, path='/', expires=expires_date, domain=domain)
+            rp.set_cookie("session_id", session_id, path='/', expires=cookie_expires_date, domain=domain)
+            rp.set_cookie("KLID", KLID, path='/', expires=cookie_expires_date, domain=domain)
         return rp
 
     elif request.method == 'POST':
@@ -68,3 +69,8 @@ def test(request):
         url += "?" + "&".join(params_list)
 
         return redirect(url)
+
+
+@checklogin
+def test2(request):
+    return HttpResponse("test2")
