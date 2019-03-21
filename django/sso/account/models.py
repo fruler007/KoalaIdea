@@ -5,7 +5,7 @@ from django.db import models
 class UserProfile(models.Model):
     username = models.CharField(max_length=128, null=False)
     email = models.EmailField(max_length=128, null=True)
-    mobile = models.CharField(max_length=64)
+    phone = models.CharField(max_length=64, blank=False, db_index=True, unique=True)
     password = models.CharField(max_length=128, null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
     last_login_date = models.DateTimeField(auto_now=True)
